@@ -23,7 +23,7 @@ for (let i = 0; i < cartJson.length; i++) { // created loop for cartJson to disp
   })
   .then((product) => {
     console.log(product)
-    const cartItems = document.getElementById("cart__items");
+    const cartItems = document.getElementById("cart__items"); /* inside I used variables from selected items in cart (cartItems) like color qnd quantity, the rest are from the products API */
     cartItems.innerHTML += `
         <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
                 <div class="cart__item__img">
@@ -32,7 +32,7 @@ for (let i = 0; i < cartJson.length; i++) { // created loop for cartJson to disp
                 <div class="cart__item__content">
                   <div class="cart__item__content__description">
                     <h2>${product.name}</h2>
-                    <p>${color}</p>
+                    <p>${color}</p> 
                     <p>${product.price} €</p>
                   </div>
                   <div class="cart__item__content__settings">
