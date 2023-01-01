@@ -16,49 +16,42 @@ for (let i = 0; i < cartJson.length; i++) { // created loop for cartJson to disp
     let color = cartJson[i]['color'];
     let quantity = cartJson [i]['quantity'];
 
-} 
-
-
-/* fetch("http://localhost:3000/api/products")
+   fetch("http://localhost:3000/api/products/"+ id) // fetching product data
   .then((response) => {
-    return response.json();
+    return response.json(); // display data in structured form
   })
-  .then((products) => {
-    const items = document.getElementById("items");
-
-    for (let i = 0; i < products.length; i++) {
-        const product = products[i];
-        console.log(product);
-      const title = document.getElementsByClassName("title");
-      const price = +document.getElementsByClassName("price").value;
-      const color = document.getElementsByClassName("colors").value; //to add the selected color value to the cart
-  const quantity = +document.getElementsByClassName("itemquantity").value; // + indicates treating quantity as number, not string
-  
-      console.log(product);
-
-items.innerHTML += `
-<article class="cart__item" data-id=${product-ID}" data-color="${product-color}">
+  .then((product) => {
+    console.log(product)
+    const cartItems = document.getElementById("cart__items");
+    cartItems.innerHTML += `
+        <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
                 <div class="cart__item__img">
-                  <img src="${product.imageUrl}" alt="this is a couch">
+                  <img src=${product.imageUrl} alt="Photographie d'un canapé">
                 </div>
                 <div class="cart__item__content">
                   <div class="cart__item__content__description">
-                    <h2>"${product.title}"</h2>
-                    <p>"${product.color}"</p>
-                    <p>"${product.price}"</p>
+                    <h2>${product.name}</h2>
+                    <p>${product.colors}</p>
+                    <p>${product.price} €</p>
                   </div>
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
-                      <p>Qté : "${product.quantity}"</p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+                      <p>${product.quantity} : </p>
+                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="1">
                     </div>
                     <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">"Supprimer"</p>
+                      <p class="deleteItem">Supprimer</p>
                     </div>
                   </div>
                 </div>
               </article>
               `;
-            }
-        });
-        */
+            });
+        }
+            
+
+/* const delete = [] => {
+}
+
+document.getElementsByClassName("cart__item__content__settings__delete").addEventListener("click", delete);
+*/
