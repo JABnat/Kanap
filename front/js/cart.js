@@ -25,7 +25,7 @@ for (let i = 0; i < cartJson.length; i++) { // created loop for cartJson to disp
     console.log(product)
     const cartItems = document.getElementById("cart__items"); /* inside I used variables from selected items in cart (cartItems) like color qnd quantity, the rest are from the products API */
     cartItems.innerHTML += `
-        <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
+        <article class="cart__item" data-id="${product._id}" data-color="${color}">
                 <div class="cart__item__img">
                   <img src=${product.imageUrl} alt="Photographie d'un canapé">
                 </div>
@@ -47,12 +47,36 @@ for (let i = 0; i < cartJson.length; i++) { // created loop for cartJson to disp
                 </div>
               </article>
               `;
-            });
-        }
-            
 
-/* const delete = [] => {
+           // Check if we are on the last iteration
+      if (i === cartJson.length - 1) {
+        // Retrieve all the delete buttons on the page
+        const deleteBtns = document.querySelectorAll('.deleteItem');
+ 
+        // For each delete button
+        deleteBtns.forEach((btn) => {
+          // Create an EventListener that watches for the clicks
+          btn.addEventListener('click', () => {
+            // Grab the parent article so that we can access data-id and data-color
+            const article = btn.closest('article');
+ 
+            // Access id and color with dataset
+            const id = article.dataset.id;
+            const color = article.dataset.color;
+ 
+            // Find the position of the element we want to delete
+            const index = cartJson.findIndex((el) => el.id === id && el.color === color);
+ 
+            // Delete the item from the array
+            cartJson.splice(index, 1);
+ 
+            // Update localStorage to reflect the changes
+            localStorage.setItem('cart', JSON.stringify(cartJson));
+ 
+            // This reloads the page
+            window.location.reload();
+          });
+        });
+      }
+    });
 }
-
-document.getElementsByClassName("cart__item__content__settings__delete").addEventListener("click", delete);
-*/
