@@ -5,6 +5,7 @@ let cart = window.localStorage.getItem('cart');
 const cartJson = JSON.parse(cart); //convert sting into structured form
 console.log(cartJson);
 
+
 // for (START POINT ; END POINT ; INCREASE VALUE)
 //    i variable is the "counter" of the loop, it count at which iteration the loop is at
 //    i < cartJson.length tell how many times the loop runs, here we want the loop for every product in the cart (hence the .lengh)
@@ -48,35 +49,39 @@ for (let i = 0; i < cartJson.length; i++) { // created loop for cartJson to disp
               </article>
               `;
 
-           // Check if we are on the last iteration
+           // Create a conditional to ensure the action is performed after the last iteration
       if (i === cartJson.length - 1) {
-        // Retrieve all the delete buttons on the page
-        const deleteBtns = document.querySelectorAll('.deleteItem');
- 
-        // For each delete button
+        const deleteBtns = document.querySelectorAll('.deleteItem'); // Retrieve all the delete buttons on the page
+        
+        // ... for each delete button ...
         deleteBtns.forEach((btn) => {
-          // Create an EventListener that watches for the clicks
-          btn.addEventListener('click', () => {
-            // Grab the parent article so that we can access data-id and data-color
-            const article = btn.closest('article');
- 
-            // Access id and color with dataset
-            const id = article.dataset.id;
+          btn.addEventListener('click', () => { // Create an EventListener that watches for the clicks 
+            const article = btn.closest('article'); // Grab the parent article so that we can access data-id and data-color  
+            const id = article.dataset.id; // Access id and color with dataset
             const color = article.dataset.color;
- 
-            // Find the position of the element we want to delete
-            const index = cartJson.findIndex((el) => el.id === id && el.color === color);
- 
-            // Delete the item from the array
-            cartJson.splice(index, 1);
- 
-            // Update localStorage to reflect the changes
-            localStorage.setItem('cart', JSON.stringify(cartJson));
- 
-            // This reloads the page
-            window.location.reload();
-          });
+            const index = cartJson.findIndex((el) => el.id === id && el.color === color); // Find the position of the element we want to delete
+          
+            cartJson.splice(index, 1);   // Delete the item from the array
+           
+            localStorage.setItem('cart', JSON.stringify(cartJson));  // Update localStorage to reflect the changes
+            
+            window.location.reload(); // This reloads the page
+          }); 
         });
-      }
-    });
-}
+
+  if (i === cartJson.length - 1) {
+    const changeQtyBtns = document.querySelectorAll('.itemQuantity');
+
+    changeQtyBtns.forEach((btn) => {
+      btn.addEventListener('change', (event) => {
+      const article = btn.closest('article'); // Grab the parent article so that we can access data-id and data-color  
+            const id = article.dataset.id; // Access id and color with dataset
+            const color = article.dataset.color;
+            const index = cartJson.findIndex((el) => el.id === id && el.color === color); 
+            const newQty = event.target.value;
+            cartJson[i]['quantity'] = newQty;
+            console.log(event.target)
+            console.log(newQty);
+           console.log(cartJson);
+
+    })});};};});}
