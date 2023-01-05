@@ -53,6 +53,8 @@ const addToCart = () => {
   }); // to find duplicates in the cart
   if (match) {
     match.quantity += quantity;
+    alert("Item already exists in cart!"); // alert to already existing item in cart
+      console.log(alert);
   } else {
     cart.push(product);
   }
