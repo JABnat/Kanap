@@ -11,7 +11,6 @@ console.log(cartJson);
 //    i < cartJson.length tell how many times the loop runs, here we want the loop for every product in the cart (hence the .lengh)
 //    i++ means to increase i varaible by one at every loop 
 for (let i = 0; i < cartJson.length; i++) { // created loop for cartJson to display structured data on couches in the cart
-    console.log(i);
     console.log(cartJson[i]['id']); // isolating 'id' from , each product (i), in the cart
     let id = cartJson[i]['id'];
     let color = cartJson[i]['color'];
@@ -23,7 +22,7 @@ for (let i = 0; i < cartJson.length; i++) { // created loop for cartJson to disp
     return response.json(); // display data in structured form
   })
   .then((product) => {
-    console.log(product)
+    //console.log(product)
     const cartItems = document.getElementById("cart__items"); /* inside I used variables from selected items in cart (cartItems) like color qnd quantity, the rest are from the products API */
     cartItems.innerHTML += `
         <article class="cart__item" data-id="${product._id}" data-color="${color}">
@@ -69,19 +68,28 @@ for (let i = 0; i < cartJson.length; i++) { // created loop for cartJson to disp
           }); 
         });
 
-  if (i === cartJson.length - 1) {
-    const changeQtyBtns = document.querySelectorAll('.itemQuantity');
+        const changeQtyBtns = document.querySelectorAll('.itemQuantity');
 
-    changeQtyBtns.forEach((btn) => {
-      btn.addEventListener('change', (event) => {
-      const article = btn.closest('article'); // Grab the parent article so that we can access data-id and data-color  
-            const id = article.dataset.id; // Access id and color with dataset
-            const color = article.dataset.color;
-            const index = cartJson.findIndex((el) => el.id === id && el.color === color); 
-            const newQty = event.target.value;
-            cartJson[i]['quantity'] = newQty;
-            console.log(event.target)
-            console.log(newQty);
-           console.log(cartJson);
+        changeQtyBtns.forEach((btn) => {
+          btn.addEventListener('change', (event) => {
+          const article = btn.closest('article'); // Grab the parent article so that we can access data-id and data-color  
+                const id = article.dataset.id; // Access id and color with dataset
+                const color = article.dataset.color;
+                const index = cartJson.findIndex((el) => el.id === id && el.color === color); 
+                const newQty = event.target.value;
+                
+                
+                
+                cartJson[index]['quantity'] = +newQty;
+                console.log(event.target);
+                console.log(newQty);
+                console.log(cartJson);
 
-    })});};};});}
+               localStorage.setItem('cart', JSON.stringify(cartJson));
+              
+    
+        })});
+  
+    
+    ;};});}
+
