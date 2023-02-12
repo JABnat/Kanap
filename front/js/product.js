@@ -1,3 +1,4 @@
+// necessary for finind te URL and id within the parameters
 const url = window.location.href;
 console.log(url);
 
@@ -6,6 +7,7 @@ console.log(getURL);
 
 const id = getURL.searchParams.get("id");
 console.log(id);
+// --
 
 fetch("http://localhost:3000/api/products/" + id)
   .then((response) => {
@@ -37,7 +39,7 @@ fetch("http://localhost:3000/api/products/" + id)
     }
   });
 
-const addToCart = () => {
+const addToCart = () => { // ()=> makes this an arrow function 
   const color = document.getElementById("colors").value; //to add the selected color value to the cart
   const quantity = +document.getElementById("quantity").value; // + indicates treating quantity as number, not string
   const product = {
@@ -45,6 +47,14 @@ const addToCart = () => {
     color: color,
     quantity: quantity,
   };
+
+  // let panier 
+  // if (localStorage.cart) {
+  //   panier = JSON.parse(localStorage.cart)
+  // } else {
+  //   panier = []
+  // }
+  
   const cart = (localStorage.cart && JSON.parse(localStorage.cart)) || []; // localstoarage sees what's in cart, then reconverts from string to array otherwise gives 0
   const match = cart.find((item) => {
     if (item.id === id && item.color === color) {
@@ -53,7 +63,7 @@ const addToCart = () => {
   }); // to find duplicates in the cart
   if (match) {
     match.quantity += quantity;
-    alert("Item already exists in cart!"); // alert to already existing item in cart
+    alert("L'article existe déjà dans le panier !"); // alert to already existing item in cart
       console.log(alert);
   } else {
     cart.push(product);
@@ -62,3 +72,4 @@ const addToCart = () => {
 };
 
 document.getElementById("addToCart").addEventListener("click", addToCart);
+
