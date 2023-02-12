@@ -1,41 +1,44 @@
-// if item added to cart, display image, color, quantity, include hyperlink back to oritional product
+// TOTAL QTY & PRICE
+
+function calculateTotalPriceAndQuantity() {
+  const pricesHTML = document.getElementsByClassName("itemPrice");
+
+  const cart = window.localStorage.getItem("cart");
+  const cartJson = JSON.parse(cart);
+
+  let totalSum = 0;
+  let totalQuantity = 0;
+
+  for (let i = 0; i < cartJson.length; i++) {
+    totalQuantity += cartJson[i]["quantity"];
+    totalSum += +pricesHTML[i]["innerHTML"];
+  }
+
+  const totalHTML = document.getElementsByClassName("cart__price")[0];
+  totalHTML.innerHTML = `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice"></span>${totalSum} €</p>`;
+  console.log(totalHTML);
+}
+
+// FETCH INFO FROM LOCAL STORAGE & PUT IT INTO STRUCTURED FORM 
 
 let cart = window.localStorage.getItem("cart");
+const cartJson = JSON.parse(cart);
 
-const cartJson = JSON.parse(cart); //convert sting into structured form
-
-let totalSum = 0
-                let totalQuantity = 0 
-                 for (let i = 0; i < cartJson.length; i++) {
-                  totalSum += cartJson[i]['price']
-                  totalQuantity += cartJson[i]['quantity']
-                 }
-const totalHTML = document.getElementsByClassName('cart__price')[0];
-                 totalHTML.innerHTML =
-                  `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice"></span>${totalSum} €</p>`
-                 console.log(totalHTML)
-
-// for (START POINT ; END POINT ; INCREASE VALUE)
-//    i variable is the "counter" of the loop, it count at which iteration the loop is at
-//    i < cartJson.length tell how many times the loop runs, here we want the loop for every product in the cart (hence the .lengh)
-//    i++ means to increase i varaible by one at every loop
 for (let i = 0; i < cartJson.length; i++) {
-  // created loop for cartJson to display structured data on couches in the cart
   let id = cartJson[i]["id"];
   let color = cartJson[i]["color"];
   let quantity = cartJson[i]["quantity"];
   quantity = JSON.stringify(quantity);
 
-  fetch("http://localhost:3000/api/products/" + id) // fetching product data
+// INSERT CHANGES FOR PRODUCTS (COLOR, QTY, PRICE, PRODUCT NAME, IMAGE)
+
+  fetch("http://localhost:3000/api/products/" + id) 
     .then((response) => {
-      return response.json(); // display data in structured form
+      return response.json(); 
     })
     .then((product) => {
       let price = product.price * quantity;
-      const cartItems =
-        document.getElementById(
-          "cart__items"
-        ); /* inside I used variables from selected items in cart (cartItems) like color qnd quantity, the rest are from the products API */
+      const cartItems = document.getElementById("cart__items"); 
       cartItems.innerHTML += `
         <article class="cart__item" data-id="${product._id}" data-color="${color}">
                 <div class="cart__item__img">
@@ -59,99 +62,71 @@ for (let i = 0; i < cartJson.length; i++) {
                 </div>
               </article>
               `;
-    
 
-      // Create a conditional to ensure the action is performed after the last iteration
+      calculateTotalPriceAndQuantity();
+
+// DELETE BUTTONS
       if (i === cartJson.length - 1) {
-        const deleteBtns = document.querySelectorAll(".deleteItem"); // Retrieve all the delete buttons on the page
+        const deleteBtns = document.querySelectorAll(".deleteItem"); 
 
-        // ... for each delete button ...
+       
         deleteBtns.forEach((btn) => {
           btn.addEventListener("click", () => {
-            // Create an EventListener that watches for the clicks
-            const article = btn.closest("article"); // Grab the parent article so that we can access data-id and data-color
-            const id = article.dataset.id; // Access id and color with dataset
+            const article = btn.closest("article"); 
+            const id = article.dataset.id; 
             const color = article.dataset.color;
             const index = cartJson.findIndex(
               (el) => el.id === id && el.color === color
-            ); // Find the position of the element we want to delete
+            ); 
 
-            cartJson.splice(index, 1); // Delete the item from the array
+            cartJson.splice(index, 1); // DELETE ITEM
 
-            localStorage.setItem("cart", JSON.stringify(cartJson)); // Update localStorage to reflect the changes
+            localStorage.setItem("cart", JSON.stringify(cartJson)); //SAVE INTO LOCAL STORAGE
 
-            article.remove();
+            article.remove(); // REMOVE FROM PAGE
           });
         });
 
-        // Quantity
+// QUANTITY
         const changeQtyBtns = document.querySelectorAll(".itemQuantity");
 
         changeQtyBtns.forEach((btn) => {
           btn.addEventListener("change", (event) => {
-            const article = btn.closest("article"); // Grab the parent article so that we can access data-id and data-color
-            const id = article.dataset.id; // Access id and color with dataset
+            const article = btn.closest("article"); 
+            const id = article.dataset.id; 
             const color = article.dataset.color;
             const index = cartJson.findIndex(
               (el) => el.id === id && el.color === color
             );
-            const newQty = event.target.value; // new variable to show the new value produced by the event (changed qty)
+            const newQty = event.target.value; 
 
             cartJson[index]["quantity"] = +newQty;
 
             localStorage.setItem("cart", JSON.stringify(cartJson));
 
-            // updating PRICE for quantity change inside of the eventlistener of the quantity change
 
-            fetch("http://localhost:3000/api/products/" + id) //refetch the product information for the price
+            fetch("http://localhost:3000/api/products/" + id) 
               .then((response) => {
-                return response.json(); // display data in structured form
+                return response.json(); 
               })
               .then((product) => {
-                const updatedPrice = product["price"] * newQty; //create variable with the math of thte updated price (price of the product x the new qty)
-                const itemPrice = article.querySelector(".itemPrice"); // creating a variable to be able to display it on the page with innerHTML
+                const updatedPrice = product["price"] * newQty; 
+                const itemPrice = article.querySelector(".itemPrice"); 
                 itemPrice.innerHTML = updatedPrice;
                 const itemPriceList = document.querySelectorAll(".itemPrice");
                 let totalPrice = 0;
 
-                // TOTAL.PRICE & QUANTITY
+// TOTAL.PRICE & QUANTITY
 
                 for (i = 0; i < itemPriceList.length; i++) {
                   const currentItem = itemPriceList[i];
                   totalPrice = totalPrice + Number(currentItem.innerText);
                 }
-                
-                const totalCartJson = window.localStorage.getItem("cart")
-                const cartJson = JSON.parse(totalCartJson)
-                  console.log(cartJson)
-               
-                
-                let totalSum = 0
-                let totalQuantity = 0 
-                 for (let i = 0; i < cartJson.length; i++) {
-                  
-                  totalSum += cartJson[i]['price']
-                  totalQuantity += cartJson[i]['quantity']
 
-                 }
-                const totalHTML = document.getElementsByClassName('cart__price')[0];
-                 totalHTML.innerHTML =
-                  `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice"></span>${totalSum} €</p>`
-                 console.log(totalHTML)
-              
+                calculateTotalPriceAndQuantity();
               });
           });
         });
-
-        // updating the price when a quantity is increased
-
-        // Quantity
-
-        // Total
-
-        // Total
-
-        //submit button
       }
     });
 }
