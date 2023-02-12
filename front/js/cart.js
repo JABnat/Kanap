@@ -3,7 +3,17 @@
 let cart = window.localStorage.getItem("cart");
 
 const cartJson = JSON.parse(cart); //convert sting into structured form
-console.log(cartJson);
+
+let totalSum = 0
+                let totalQuantity = 0 
+                 for (let i = 0; i < cartJson.length; i++) {
+                  totalSum += cartJson[i]['price']
+                  totalQuantity += cartJson[i]['quantity']
+                 }
+const totalHTML = document.getElementsByClassName('cart__price')[0];
+                 totalHTML.innerHTML =
+                  `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice"></span>${totalSum} €</p>`
+                 console.log(totalHTML)
 
 // for (START POINT ; END POINT ; INCREASE VALUE)
 //    i variable is the "counter" of the loop, it count at which iteration the loop is at
@@ -11,7 +21,6 @@ console.log(cartJson);
 //    i++ means to increase i varaible by one at every loop
 for (let i = 0; i < cartJson.length; i++) {
   // created loop for cartJson to display structured data on couches in the cart
-  // console.log(cartJson[i]["id"]); // isolating 'id' from , each product (i), in the cart
   let id = cartJson[i]["id"];
   let color = cartJson[i]["color"];
   let quantity = cartJson[i]["quantity"];
@@ -89,9 +98,6 @@ for (let i = 0; i < cartJson.length; i++) {
             const newQty = event.target.value; // new variable to show the new value produced by the event (changed qty)
 
             cartJson[index]["quantity"] = +newQty;
-            // console.log(event.target);
-            // console.log(newQty);
-            // console.log(cartJson);
 
             localStorage.setItem("cart", JSON.stringify(cartJson));
 
@@ -113,30 +119,26 @@ for (let i = 0; i < cartJson.length; i++) {
                 for (i = 0; i < itemPriceList.length; i++) {
                   const currentItem = itemPriceList[i];
                   totalPrice = totalPrice + Number(currentItem.innerText);
-                  // console.log(totalPrice);
                 }
-
-                // cartJson[index]["price"] = +updatedPrice;
-                // console.log(cartJson);
-                // localStorage.setItem("cart", JSON.stringify(cartJson));
                 
-                // const totalCartItems = window.localStorage.getItem(price);
-                // const cartJson = JSON.parse(totalCartItems)
-                // console.log(cartJson)
+                const totalCartJson = window.localStorage.getItem("cart")
+                const cartJson = JSON.parse(totalCartJson)
+                  console.log(cartJson)
+               
+                
+                let totalSum = 0
+                let totalQuantity = 0 
+                 for (let i = 0; i < cartJson.length; i++) {
+                  
+                  totalSum += cartJson[i]['price']
+                  totalQuantity += cartJson[i]['quantity']
 
-                // for (let i = 0; i < totalCartItems.length; i++) {
-                //       sum += updatedPrice[i];
-                //      const totalSum = document.getElementById("totalPrice");
-                //      totalSum.innerHTML = sum
-                    
-                //   const totalCartQty =
-                //     article.querySelectorAll(".totalQuantity");
-                //   const totalCartPrice =
-                //     article.querySelectorAll(".totalPrice"); // creating a variable to be able to display it on the page with innerHTML
-                //   totalCartQty.innerHTML += newQty[i];
-                //   totalCartPrice.innerHTML += updatedPrice[i];
-                //   const totalsPrice = article.querySelectorAll(".cart__price");
-                //  }
+                 }
+                const totalHTML = document.getElementsByClassName('cart__price')[0];
+                 totalHTML.innerHTML =
+                  `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice"></span>${totalSum} €</p>`
+                 console.log(totalHTML)
+              
               });
           });
         });
