@@ -11,12 +11,14 @@ function calculateTotalPriceAndQuantity() {
 
   for (let i = 0; i < cartJson.length; i++) {
     totalQuantity += cartJson[i]["quantity"];
-    totalSum += +pricesHTML[i]["innerHTML"];
+    if (pricesHTML[i] != undefined) {
+      totalSum += +pricesHTML[i]["innerHTML"];
+    }
   }
 
   const totalHTML = document.getElementsByClassName("cart__price")[0];
   totalHTML.innerHTML = `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice"></span>${totalSum} €</p>`;
-  console.log(totalHTML);
+  
 }
 
 // FETCH INFO FROM LOCAL STORAGE & PUT IT INTO STRUCTURED FORM 
@@ -84,6 +86,8 @@ for (let i = 0; i < cartJson.length; i++) {
             localStorage.setItem("cart", JSON.stringify(cartJson)); //SAVE INTO LOCAL STORAGE
 
             article.remove(); // REMOVE FROM PAGE
+
+            calculateTotalPriceAndQuantity()
           });
         });
 
@@ -118,10 +122,10 @@ for (let i = 0; i < cartJson.length; i++) {
 
 // TOTAL.PRICE & QUANTITY
 
-                for (i = 0; i < itemPriceList.length; i++) {
-                  const currentItem = itemPriceList[i];
-                  totalPrice = totalPrice + Number(currentItem.innerText);
-                }
+                // for (i = 0; i < itemPriceList.length; i++) {
+                //   const currentItem = itemPriceList[i];
+                //   totalPrice = totalPrice + Number(currentItem.innerText);
+                // }
 
                 calculateTotalPriceAndQuantity();
               });
@@ -136,3 +140,8 @@ const submitButton = document.getElementById("order");
 const firstNameInput = document.getElementById("firstName");
 const lastNameInput = document.getElementById("lastName");
 const submitEmail = document.getElementById("email");
+
+submitButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  console.log('event clicked')
+})
