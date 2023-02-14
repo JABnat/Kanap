@@ -1,4 +1,9 @@
-getInfoAboutAllKanapsInCart()
+async function initializePage() {
+    await getInfoAboutAllKanapsInCart();
+    calculateTotalPriceAndQuantity() 
+  }
+  
+  initializePage();
 
 function getKanapInfosFromId(id) {
     return fetch("http://localhost:3000/api/products/" + id)
@@ -45,9 +50,9 @@ function convertProductToHTMLFormat(product,chosenColor,chosenQty) {
                 </div>
                 <div class="cart__item__content">
                   <div class="cart__item__content__description">
-                    <h2>${product.name}</h2>
+                    <h2> ${product.name}</h2>
                     <p>${chosenColor}</p>
-                    <p>${product.price}€</p>
+                    <p><div class="itemPrice">${product.price}</div>€</p>
                   </div>
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
@@ -63,3 +68,25 @@ function convertProductToHTMLFormat(product,chosenColor,chosenQty) {
     `
 }
 
+function calculateTotalPriceAndQuantity() {
+    const pricesHTML = document.getElementsByClassName("itemPrice");
+  
+    const cart = window.localStorage.getItem("cart");
+    const cartJson = JSON.parse(cart);
+  
+    let totalSum = 0;
+    let totalQuantity = 0;
+  
+    for (let i = 0; i < cartJson.length; i++) {
+      totalQuantity += cartJson[i]["quantity"];
+      if (pricesHTML[i] != undefined) {
+        console.log(pricesHTML[i]["innerHTML"])
+        totalSum += +pricesHTML[i]["innerHTML"];
+      }
+    }
+  
+    const totalHTML = document.getElementsByClassName("cart__price")[0];
+    totalHTML.innerHTML = `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice"></span>${totalSum} €</p>`;
+    
+  }
+  calculateTotalPriceAndQuantity() 
