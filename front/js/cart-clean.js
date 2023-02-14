@@ -1,6 +1,7 @@
 async function initializePage() {
     await getInfoAboutAllKanapsInCart();
     calculateTotalPriceAndQuantity() 
+    initEventListener()
   }
   
   initializePage();
@@ -80,7 +81,6 @@ function calculateTotalPriceAndQuantity() {
     for (let i = 0; i < cartJson.length; i++) {
       totalQuantity += cartJson[i]["quantity"];
       if (pricesHTML[i] != undefined) {
-        console.log(pricesHTML[i]["innerHTML"])
         totalSum += +pricesHTML[i]["innerHTML"];
       }
     }
@@ -89,4 +89,18 @@ function calculateTotalPriceAndQuantity() {
     totalHTML.innerHTML = `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice"></span>${totalSum} €</p>`;
     
   }
-  calculateTotalPriceAndQuantity() 
+
+  function initEventListener() {
+    let qtyInputList = document.querySelectorAll(".itemQuantity")
+    for(let i = 0; i < qtyInputList.length; i++) {
+        let qtyInputField = qtyInputList[i]
+        qtyInputField.addEventListener("change", (event) => {
+            console.log(event['target']['value'])
+        })
+       
+     }
+    
+           
+}
+
+ 
