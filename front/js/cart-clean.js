@@ -127,4 +127,6 @@ function actionDeleteItem(event) {
     cartInJsonFormat.splice(indexOfSelectedItem,1) // delete selceted couch (by index) from json variable
 
     window.localStorage.setItem("cart", JSON.stringify(cartInJsonFormat)); //SAVE deleted article INTO LOCAL STORAGE (in sring form)
-    }
+
+    calculateTotalPriceAndQuantity()
+}
