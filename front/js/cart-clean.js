@@ -1,4 +1,5 @@
-async function initializePage() { // putting the functions in order of action
+async function initializePage() {
+  // putting the functions in order of action
   await getInfoAboutAllKanapsInCart();
   calculateTotalPriceAndQuantity();
   initEventListener();
@@ -6,7 +7,8 @@ async function initializePage() { // putting the functions in order of action
 
 initializePage();
 
-function getKanapInfosFromId(id) { // fetching the API details for each couch
+function getKanapInfosFromId(id) {
+  // fetching the API details for each couch
   return fetch("http://localhost:3000/api/products/" + id)
     .then(function (httpBodyResponse) {
       // httpBodyResponse contient la réponse dans son entièreté, avec le header & le reste.
@@ -30,7 +32,8 @@ function getKanapInfosFromId(id) { // fetching the API details for each couch
     });
 }
 
-async function getInfoAboutAllKanapsInCart(info) { // loop through the lidst of cart items and get local storage info
+async function getInfoAboutAllKanapsInCart(info) {
+  // loop through the lidst of cart items and get local storage info
   const localStorage = window.localStorage.getItem("cart");
   const cartInJsonFormat = JSON.parse(localStorage);
 
@@ -43,10 +46,11 @@ async function getInfoAboutAllKanapsInCart(info) { // loop through the lidst of 
   }
 }
 
-function convertProductToHTMLFormat(product, chosenColor, chosenQty) { // display personalized html for each item
+function convertProductToHTMLFormat(product, chosenColor, chosenQty) {
+  // display personalized html for each item
   let cartItems = document.getElementById("cart__items");
   cartItems.innerHTML += `
-    <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
+    <article class="cart__item" data-id="${product._id}" data-color="${chosenColor}">
                 <div class="cart__item__img">
                   <img src=${product.imageUrl} alt="Photographie d'un canapé">
                 </div>
@@ -70,7 +74,8 @@ function convertProductToHTMLFormat(product, chosenColor, chosenQty) { // displa
     `;
 }
 
-function calculateTotalPriceAndQuantity() { // calculate and display, loop 
+function calculateTotalPriceAndQuantity() {
+  // calculate and display, loop
   const pricesHTML = document.getElementsByClassName("itemPrice");
   const cart = window.localStorage.getItem("cart");
   const cartJson = JSON.parse(cart);
@@ -89,22 +94,37 @@ function calculateTotalPriceAndQuantity() { // calculate and display, loop
   totalHTML.innerHTML = `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice"></span>${totalSum} €</p>`;
 }
 
-function initEventListener() { 
-    // event listener for qty
+function initEventListener() {
+  // event listener for qty
   let qtyInputList = document.querySelectorAll(".itemQuantity");
   for (let i = 0; i < qtyInputList.length; i++) {
     let qtyInputField = qtyInputList[i];
-    qtyInputField.addEventListener("change", (event) => {
-    });
+    qtyInputField.addEventListener("change", (event) => {});
   }
-      // event listener for delete btn
-  const dltBtnList = document.querySelectorAll(".deleteItem"); 
-  for (let i=0; i< dltBtnList.length; i++) {
+  // event listener for delete btn
+  const dltBtnList = document.querySelectorAll(".deleteItem");
+  for (let i = 0; i < dltBtnList.length; i++) {
     let dltBtn = dltBtnList[i];
-    dltBtn.addEventListener("click", () => {
-        console.log('here i am')
-    })
+    dltBtn.addEventListener("click", (event) => {
+      actionDeleteItem(event);
+    });
   }
 }
 
-//  function actionDeleteItem(event)
+function actionDeleteItem(event) {
+    // delete html article from the page
+  let article = event["target"].closest("article");
+  article.remove();
+    //  delete article from the local storage
+    let cart = window.localStorage.getItem("cart");
+    const cartInJsonFormat = JSON.parse(cart);
+    const id = article.dataset.id; 
+    const color = article.dataset.color;
+    const indexOfSelectedItem = cartInJsonFormat.findIndex(
+    (element) => element.id === id && element.color === color
+    );
+
+    cartInJsonFormat.splice(indexOfSelectedItem,1) // delete selceted couch (by index) from json variable
+
+    window.localStorage.setItem("cart", JSON.stringify(cartInJsonFormat)); //SAVE deleted article INTO LOCAL STORAGE (in sring form)
+    }
