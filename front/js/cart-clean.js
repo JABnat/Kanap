@@ -7,7 +7,7 @@ async function initializePage() {
 
 initializePage();
 
-function getKanapInfosFromId(id) {
+function getKanapInfoFromId(id) {
   // fetching the API details for each couch
   return fetch("http://localhost:3000/api/products/" + id)
     .then(function (httpBodyResponse) {
@@ -35,13 +35,13 @@ function getKanapInfosFromId(id) {
 async function getInfoAboutAllKanapsInCart(info) {
   // loop through the lidst of cart items and get local storage info
   const localStorage = window.localStorage.getItem("cart");
-  const cartInJsonFormat = JSON.parse(localStorage);
+  const cartInObjectFormat = JSON.parse(localStorage);
 
-  for (let i = 0; i < cartInJsonFormat.length; i++) {
-    let currentIdKanap = cartInJsonFormat[i]["id"];
-    let chosenColor = cartInJsonFormat[i]["color"];
-    let chosenQty = cartInJsonFormat[i]["quantity"];
-    let currentKanapFromApi = await getKanapInfosFromId(currentIdKanap);
+  for (let i = 0; i < cartInObjectFormat.length; i++) {
+    let currentIdKanap = cartInObjectFormat[i]["id"];
+    let chosenColor = cartInObjectFormat[i]["color"];
+    let chosenQty = cartInObjectFormat[i]["quantity"];
+    let currentKanapFromApi = await getKanapInfoFromId(currentIdKanap);
     convertProductToHTMLFormat(currentKanapFromApi, chosenColor, chosenQty);
   }
 }
@@ -78,15 +78,16 @@ function calculateTotalPriceAndQuantity() {
   // calculate and display, loop
   const pricesHTML = document.getElementsByClassName("itemPrice");
   const cart = window.localStorage.getItem("cart");
-  const cartJson = JSON.parse(cart);
+  const cartInObjectFormat = JSON.parse(cart);
 
   let totalSum = 0;
   let totalQuantity = 0;
 
-  for (let i = 0; i < cartJson.length; i++) {
-    totalQuantity += cartJson[i]["quantity"];
+  for (let i = 0; i < cartInObjectFormat.length; i++) {
+    let currentQty = +cartInObjectFormat[i]["quantity"]
+    totalQuantity += currentQty;
     if (pricesHTML[i] != undefined) {
-      totalSum += +pricesHTML[i]["innerHTML"];
+      totalSum += +pricesHTML[i]["innerHTML"] * currentQty;
     }
   }
 
@@ -99,7 +100,10 @@ function initEventListener() {
   let qtyInputList = document.querySelectorAll(".itemQuantity");
   for (let i = 0; i < qtyInputList.length; i++) {
     let qtyInputField = qtyInputList[i];
-    qtyInputField.addEventListener("change", (event) => {});
+    qtyInputField.addEventListener("change", (event) => {
+        actionModifyQuantity(event)
+        
+    });
   }
   // event listener for delete btn
   const dltBtnList = document.querySelectorAll(".deleteItem");
@@ -117,16 +121,39 @@ function actionDeleteItem(event) {
   article.remove();
     //  delete article from the local storage
     let cart = window.localStorage.getItem("cart");
-    const cartInJsonFormat = JSON.parse(cart);
+    const cartInObjectFormat = JSON.parse(cart);
     const id = article.dataset.id; 
     const color = article.dataset.color;
-    const indexOfSelectedItem = cartInJsonFormat.findIndex(
+    const indexOfSelectedItem = cartInObjectFormat.findIndex(
     (element) => element.id === id && element.color === color
     );
 
-    cartInJsonFormat.splice(indexOfSelectedItem,1) // delete selceted couch (by index) from json variable
+    cartInObjectFormat.splice(indexOfSelectedItem,1) // delete selceted couch (by index) from json variable
 
-    window.localStorage.setItem("cart", JSON.stringify(cartInJsonFormat)); //SAVE deleted article INTO LOCAL STORAGE (in sring form)
+    window.localStorage.setItem("cart", JSON.stringify(cartInObjectFormat)); //SAVE deleted article INTO LOCAL STORAGE (in sring form)
+
+    calculateTotalPriceAndQuantity()
+}
+function actionModifyQuantity(event) {
+    let article = event["target"].closest("article")
+    let updatedQty = event['target']['value']
+    let kanapId = article.dataset.id
+    let kanapColor = article.dataset.color
+    
+
+    let cart = window.localStorage.getItem("cart");
+    const cartInObjectFormat = JSON.parse(cart);
+
+    for (let i=0; i < cartInObjectFormat.length; i++) {
+        let currentKanap = cartInObjectFormat[i]
+        if (kanapId === currentKanap.id && kanapColor === currentKanap.color){
+            currentKanap.quantity = updatedQty
+        
+            
+        }
+    }
+    
+    window.localStorage.setItem("cart", JSON.stringify(cartInObjectFormat))
 
     calculateTotalPriceAndQuantity()
 }

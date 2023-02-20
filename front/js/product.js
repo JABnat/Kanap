@@ -48,12 +48,7 @@ const addToCart = () => { // ()=> makes this an arrow function
     quantity: quantity,
   };
 
-  // let panier 
-  // if (localStorage.cart) {
-  //   panier = JSON.parse(localStorage.cart)
-  // } else {
-  //   panier = []
-  // }
+
   
   const cart = (localStorage.cart && JSON.parse(localStorage.cart)) || []; // localstoarage sees what's in cart, then reconverts from string to array otherwise gives 0
   const match = cart.find((item) => {
@@ -67,6 +62,7 @@ const addToCart = () => { // ()=> makes this an arrow function
       console.log(alert);
   } else {
     cart.push(product);
+    alert("L'article a été mis dans votre panier !"); // alter the item has been added to your cart
   }
   localStorage.cart = JSON.stringify(cart); //for LocalStorage to store the string values, must always first convert to string form
 };
