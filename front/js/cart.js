@@ -137,11 +137,12 @@ for (let i = 0; i < cartJson.length; i++) {
 
 // submit buttom & NTUD
 const submitButton = document.getElementById("order");
+console.log(submitButton);
 const firstNameInput = document.getElementById("firstName");
 const lastNameInput = document.getElementById("lastName");
 const submitEmail = document.getElementById("email");
 
-submitButton.addEventListener('click', (event) => {
-  event.preventDefault();
-  console.log('event clicked')
+submitButton.addEventListener("click", (event) => {
+  // event.preventDefault();
+  console.log ('clicked')
 })

@@ -33,7 +33,7 @@ function getKanapInfoFromId(id) {
 }
 
 async function getInfoAboutAllKanapsInCart(info) {
-  // loop through the lidst of cart items and get local storage info
+  // loop through the list of cart items and get local storage info
   const localStorage = window.localStorage.getItem("cart");
   const cartInObjectFormat = JSON.parse(localStorage);
 
@@ -113,6 +113,14 @@ function initEventListener() {
       actionDeleteItem(event);
     });
   }
+  // event listener on Commande button
+  const submitButton = document.getElementById("order");
+ 
+  submitButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    postFormDatatoAPI();
+  })
+
 }
 
 function actionDeleteItem(event) {
@@ -156,4 +164,43 @@ function actionModifyQuantity(event) {
     window.localStorage.setItem("cart", JSON.stringify(cartInObjectFormat))
 
     calculateTotalPriceAndQuantity()
+}
+
+function postFormDatatoAPI () {
+    const userFirstName = document.getElementById("firstName").value;
+    const userLastName = document.getElementById("lastName").value;
+    const userEmail = document.getElementById("email").value;
+    const userCity = document.getElementById("city").value;
+    const userAddress = document.getElementById("address").value;
+    
+    // dictionary
+    let user = {
+        name: userFirstName,
+        surname: userLastName,
+        email: userEmail,
+        city: userCity,
+        address: userAddress,
+      };
+    
+      const localStorage = window.localStorage.getItem("cart");
+      const cartInObjectFormat = JSON.parse(localStorage);
+      let cartItems = []
+
+
+      for (let i=0; i< cartInObjectFormat.length; i++) {
+      cartItems.push(cartInObjectFormat[i]["id"]);
+      }
+      console.log(cartItems)
+    //   let response = await fetch(____, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json;charset=utf-8'
+    //     },
+    //     body: JSON.stringify(user)
+    //   });
+      
+    //   let result = await response.json();
+    //   alert(result.message);
+
+
 }
