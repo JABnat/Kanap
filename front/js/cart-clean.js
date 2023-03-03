@@ -182,6 +182,7 @@ function postFormDatatoAPI () {
         address: userAddress,
       };
     
+      // retrieve the id's of every item in the cart
       const localStorage = window.localStorage.getItem("cart");
       const cartInObjectFormat = JSON.parse(localStorage);
       let cartItems = []
@@ -191,6 +192,9 @@ function postFormDatatoAPI () {
       cartItems.push(cartInObjectFormat[i]["id"]);
       }
       console.log(cartItems)
+
+      // where do I send the post?
+
     //   let response = await fetch(____, {
     //     method: 'POST',
     //     headers: {
