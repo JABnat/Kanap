@@ -174,37 +174,46 @@ function postFormDatatoAPI () {
     const userAddress = document.getElementById("address").value;
     
     // dictionary
-    let user = {
-        name: userFirstName,
-        surname: userLastName,
-        email: userEmail,
-        city: userCity,
+    let contact = {
+        firstName: userFirstName,
+        lastName: userLastName,
         address: userAddress,
+        city: userCity,
+        email: userEmail
       };
     
       // retrieve the id's of every item in the cart
       const localStorage = window.localStorage.getItem("cart");
       const cartInObjectFormat = JSON.parse(localStorage);
-      let cartItems = []
+      let products = []
 
 
       for (let i=0; i< cartInObjectFormat.length; i++) {
-      cartItems.push(cartInObjectFormat[i]["id"]);
+        products.push(cartInObjectFormat[i]["id"]);
       }
-      console.log(cartItems)
+      console.log(products)
+      let body = { contact, products }
+      let jsonBody = JSON.stringify(body)
 
-      // where do I send the post?
-
-    //   let response = await fetch(____, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json;charset=utf-8'
-    //     },
-    //     body: JSON.stringify(user)
-    //   });
+      // posting contact information to API
+    fetch("http://localhost:3000/api/products/order", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: jsonBody
+      })
+      .then(function (orderResponse){
+       return orderResponse.json()
+      })
+      .then(function (order){
+        console.log(order)
+        console.log(order.orderId)
+        window.location.href = "confirmation.html?orderId=" + order.orderId
+      })
       
-    //   let result = await response.json();
+      
+    //   let result = response.json();
     //   alert(result.message);
-
 
 }
