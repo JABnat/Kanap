@@ -5,4 +5,12 @@ const getURL = new URL(url);
 console.log(getURL);
 
 const orderId = getURL.searchParams.get("orderId");
-console.log(orderId)
+
+function displayConfirmationValidation() {
+    // display order ID 
+    let cartItems = document.getElementById("orderId");
+    cartItems.innerHTML += `
+     <span id="orderId">${orderId}</span>
+      `;
+  }
+  displayConfirmationValidation()
