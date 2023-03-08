@@ -1,13 +1,9 @@
 // necessary for finind te URL and id within the parameters
 const url = window.location.href;
-console.log(url);
 
 const getURL = new URL(url);
-console.log(getURL);
 
 const id = getURL.searchParams.get("id");
-console.log(id);
-// --
 
 fetch("http://localhost:3000/api/products/" + id)
   .then((response) => {
@@ -28,7 +24,6 @@ fetch("http://localhost:3000/api/products/" + id)
     const colorSelect = document.getElementById("colors");
 
     let colors = product.colors;
-    console.log(colors);
 
     for (let i = 0; i < colors.length; i++) {
       console.log(colors[i]);

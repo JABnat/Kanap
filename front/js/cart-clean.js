@@ -213,7 +213,5 @@ function postFormDatatoAPI () {
       })
       
       
-    //   let result = response.json();
-    //   alert(result.message);
 
-}
+add}
