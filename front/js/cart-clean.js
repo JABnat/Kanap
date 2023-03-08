@@ -211,7 +211,5 @@ function postFormDatatoAPI () {
         console.log(order.orderId)
         window.location.href = "confirmation.html?orderId=" + order.orderId
       })
-      
-      
 
-add}
+}
