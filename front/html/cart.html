@@ -77,28 +77,28 @@
               <form method="get" class="cart__order__form">
                 <div class="cart__order__form__question">
                   <label for="firstName">Prénom: </label>
-                  <input type="text" patern="^[a-zA-Z]+$" name="firstName" id="firstName" required>
-                  <p id="firstNameErrorMsg">Attention! Votre nom doit contenir au moins deux lettres et aucun chiffre</p>
+                  <input type="text" pattern="^[a-zA-Z ,.'-]+$" name="firstName" id="firstName" required>
+                  <p class="hide" id="firstNameErrorMsg">Votre nom doit contenir au moins deux lettres et aucun chiffre</p>
                 </div>
                 <div class="cart__order__form__question">
                   <label for="lastName">Nom: </label>
-                  <input type="text" patern="^[a-zA-Z]+$" name="lastName" id="lastName" required>
-                  <p id="lastNameErrorMsg">Attention! Votre nom doit contenir au moins deux lettres et aucun chiffre</p>
+                  <input type="text" pattern="^[a-zA-Z ,.'-]+$" name="lastName" id="lastName" required>
+                  <p class="hide" id="lastNameErrorMsg">Votre nom doit contenir au moins deux lettres et aucun chiffre</p>
                 </div>
                 <div class="cart__order__form__question">
                   <label for="address">Adresse: </label>
-                  <input type="text"  name="address" id="address" required>
-                  <p id="addressErrorMsg"></p>
+                  <input type="text" pattern="^([0-9]*) ?([a-zA-Z,\. ]*)+$" name="address" id="address" required>
+                  <p class="hide" id="addressErrorMsg">Votre adresse doit respecter le format suivant 124 nom-de-la-rue 12434 nom-du-ville</p>
                 </div>
                 <div class="cart__order__form__question">
                   <label for="city">Ville: </label>
-                  <input type="text" name="city" id="city" required>
-                  <p id="cityErrorMsg">Attention! Veuillez vérifier votre orthographe. Il semble que votre ville n'existe pas</p>
+                  <input type="text" pattern="^[a-zA-Z ,.'-]+$" name="city" id="city" required>
+                  <p class="hide" id="cityErrorMsg">Veuillez vérifier votre orthographe. Il semble que votre ville n'existe pas</p>
                 </div>
                 <div class="cart__order__form__question">
                   <label for="email">Email: </label>
                   <input type="email" pattern=".+@.+\..+" name="email" id="email" required>
-                  <p id="emailErrorMsg"><!-- ci est un message d'erreur --></p>
+                  <p class="hide" id="emailErrorMsg">Votre adresse doit respecter le format suivant abc@lmno.xyz</p>
                 </div>
                 <div class="cart__order__form__submit">
                   <input type="submit" value="Commander !" id="order">
@@ -133,6 +133,6 @@
         </div>
       </div>
     </footer>
-  <script src="../js/cart-clean.js"></script>
+  <script src="../js/cart.js"></script>
   </body>
 </html>

@@ -175,8 +175,12 @@ main {
 	white-space: normal;
 }
 
-
-
+/********/
+/*HIDE*/
+/********/
+.hide {
+	display: none;
+}
 
 /********/
 /*Footer*/
