@@ -249,7 +249,6 @@ function postFormDatatoAPI () {
       for (let i=0; i< cartInObjectFormat.length; i++) {
         products.push(cartInObjectFormat[i]["id"]);
       }
-      console.log(products)
       let body = { contact, products }
       let jsonBody = JSON.stringify(body)
 
@@ -266,7 +265,7 @@ function postFormDatatoAPI () {
       })
 
       .then(function (order){
-        localStorage.removeItem("cart");
+        window.localStorage.removeItem("cart");
         window.location.href = "confirmation.html?orderId=" + order.orderId
       })
 
